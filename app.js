@@ -17,7 +17,7 @@ const tours = JSON.parse(
 
 // const tours = fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`);
 
-app.get('/api/v1/tours', (req, res) => {
+const getAllTours = (req, res) => {
   res.status(200).json({
     status: 'success',
     results: tours.length,
@@ -25,9 +25,9 @@ app.get('/api/v1/tours', (req, res) => {
       tours,
     },
   });
-});
+};
 
-app.get('/api/v1/tours/:id', (req, res) => {
+const getTour = (req, res) => {
   const { id } = req.params;
   //   console.log(typeof id, id);
 
@@ -45,9 +45,9 @@ app.get('/api/v1/tours/:id', (req, res) => {
       tour,
     },
   });
-});
+};
 
-app.post('/api/v1/tours', (req, res) => {
+const createTour = (req, res) => {
   //   console.log(req.body);
   const newId = tours[tours.length - 1].id + 1;
   const newTour = Object.assign({ id: newId }, req.body);
@@ -67,9 +67,9 @@ app.post('/api/v1/tours', (req, res) => {
     }
   );
   //   res.send('done');
-});
+};
 
-app.put('/api/v1/tours/:id', (req, res) => {
+const updateTour = (req, res) => {
   //   console.log(req.body);
   const { name, duration, difficulty } = req.body;
   const { id } = req.params;
@@ -98,9 +98,9 @@ app.put('/api/v1/tours/:id', (req, res) => {
       });
     }
   );
-});
+};
 
-app.delete('/api/v1/tours/:id', (req, res) => {
+const deleteTour = (req, res) => {
   //   console.log(req.body);
   const { id } = req.params;
   const tour = tours.filter((tour) => tour.id !== parseInt(id));
@@ -125,7 +125,20 @@ app.delete('/api/v1/tours/:id', (req, res) => {
       });
     }
   );
-});
+};
+
+// app.get('/api/v1/tours', getAllTours);
+
+// app.get('/api/v1/tours/:id', getTour);
+
+// app.post('/api/v1/tours', createTour);
+
+// app.put('/api/v1/tours/:id', updateTour);
+
+// app.delete('/api/v1/tours/:id', deleteTour);
+
+app.route('/api/v1/tours').get(getAllTours).post(createTour);
+app.route('/api/v1/tours/:id').get(getTour).put(updateTour).delete(deleteTour);
 
 const port = 3000;
 app.listen(port, () => {
