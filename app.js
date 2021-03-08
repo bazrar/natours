@@ -3,6 +3,12 @@ const fs = require('fs');
 
 const app = express();
 app.use(express.json());
+
+// ############ custom middleware adds request time to the request obj ############
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  next();
+});
 // app.get('/',(req, res) => {
 //     res.status(200).json({message: 'hello from the serverside!'})
 
@@ -20,6 +26,7 @@ const tours = JSON.parse(
 const getAllTours = (req, res) => {
   res.status(200).json({
     status: 'success',
+    requestedAt: req.requestTime,
     results: tours.length,
     data: {
       tours,
