@@ -15,10 +15,12 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`, 'utf-8')
 );
 
+// const tours = fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`);
+
 app.get('/api/v1/tours', (req, res) => {
   res.status(200).json({
     status: 'success',
-    results: toursData.length,
+    results: tours.length,
     data: {
       tours,
     },
@@ -68,18 +70,34 @@ app.post('/api/v1/tours', (req, res) => {
 });
 
 app.put('/api/v1/tours/:id', (req, res) => {
-  if (req.params.id > tours.length) {
+  //   console.log(req.body);
+  const { name, duration, difficulty } = req.body;
+  const { id } = req.params;
+  const tour = tours.find((tour) => tour.id === parseInt(id));
+  //   console.log(name, duration, difficulty);
+
+  if (!tour) {
     return res.status(404).json({
       status: 'fail',
       message: 'invalid id',
     });
   }
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour: '<updated tour here...>',
-    },
-  });
+  const newTour = { ...tour, name, duration, difficulty };
+  //   console.log(newTour);
+  tours[parseInt(id)] = newTour;
+
+  fs.writeFile(
+    `${__dirname}/dev-data/data/tours-simple.json`,
+    JSON.stringify(tours),
+    (err) => {
+      res.status(200).json({
+        status: 'success',
+        data: {
+          tour: newTour,
+        },
+      });
+    }
+  );
 });
 
 const port = 3000;
