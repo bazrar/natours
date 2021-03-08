@@ -100,6 +100,33 @@ app.put('/api/v1/tours/:id', (req, res) => {
   );
 });
 
+app.delete('/api/v1/tours/:id', (req, res) => {
+  //   console.log(req.body);
+  const { id } = req.params;
+  const tour = tours.filter((tour) => tour.id !== parseInt(id));
+  //   console.log(name, duration, difficulty);
+
+  if (req.params.id > tours.length) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'invalid id',
+    });
+  }
+
+  fs.writeFile(
+    `${__dirname}/dev-data/data/tours-simple.json`,
+    JSON.stringify(tour),
+    (err) => {
+      res.status(200).json({
+        status: 'success',
+        data: {
+          tour: null,
+        },
+      });
+    }
+  );
+});
+
 const port = 3000;
 app.listen(port, () => {
   console.log('listening...');
