@@ -7,6 +7,7 @@ const userRouter = require('./routes/userRoutes');
 const app = express();
 
 // MIDDLEWARES
+
 app.use(morgan('dev'));
 
 app.use(express.json());
@@ -39,7 +40,7 @@ app.use((req, res, next) => {
 
 // app.delete('/api/v1/tours/:id', deleteTour);
 
-// ROUTE SETUPS
+// ROUTES
 
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);

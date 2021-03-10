@@ -19,12 +19,12 @@ exports.getTour = (req, res) => {
   //   console.log(typeof id, id);
 
   const tour = tours.find((tour) => tour.id === parseInt(id));
-  if (!tour) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'invalid id',
-    });
-  }
+  //   if (!tour) {
+  //     return res.status(404).json({
+  //       status: 'fail',
+  //       message: 'invalid id',
+  //     });
+  //   }
 
   res.status(200).json({
     status: 'success',
@@ -41,7 +41,7 @@ exports.createTour = (req, res) => {
 
   tours.push(newTour);
   fs.writeFile(
-    `${__dirname}/dev-data/data/tours-simple.json`,
+    `${__dirname}/../dev-data/data/tours-simple.json`,
     JSON.stringify(tours),
     (err) => {
       if (err) console.log(err);
@@ -63,18 +63,18 @@ exports.updateTour = (req, res) => {
   const tour = tours.find((tour) => tour.id === parseInt(id));
   //   console.log(name, duration, difficulty);
 
-  if (!tour) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'invalid id',
-    });
-  }
+  //   if (!tour) {
+  //     return res.status(404).json({
+  //       status: 'fail',
+  //       message: 'invalid id',
+  //     });
+  //   }
   const newTour = { ...tour, name, duration, difficulty };
   //   console.log(newTour);
   tours[parseInt(id)] = newTour;
 
   fs.writeFile(
-    `${__dirname}/dev-data/data/tours-simple.json`,
+    `${__dirname}/../dev-data/data/tours-simple.json`,
     JSON.stringify(tours),
     (err) => {
       res.status(200).json({
@@ -90,18 +90,19 @@ exports.updateTour = (req, res) => {
 exports.deleteTour = (req, res) => {
   //   console.log(req.body);
   const { id } = req.params;
+  //   console.log(id);
   const tour = tours.filter((tour) => tour.id !== parseInt(id));
   //   console.log(name, duration, difficulty);
 
-  if (req.params.id > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'invalid id',
-    });
-  }
-
+  //   if (req.params.id > tours.length) {
+  //     return res.status(404).json({
+  //       status: 'fail',
+  //       message: 'invalid id',
+  //     });
+  //   }
+  console.log(tour);
   fs.writeFile(
-    `${__dirname}/dev-data/data/tours-simple.json`,
+    `${__dirname}/../dev-data/data/tours-simple.json`,
     JSON.stringify(tour),
     (err) => {
       res.status(200).json({
@@ -112,4 +113,15 @@ exports.deleteTour = (req, res) => {
       });
     }
   );
+};
+
+exports.checkId = (req, res, next, val) => {
+  const tour = tours.find((tour) => tour.id === parseInt(val));
+  if (!tour) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'invalid id',
+    });
+  }
+  next();
 };
