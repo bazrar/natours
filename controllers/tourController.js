@@ -125,3 +125,14 @@ exports.checkId = (req, res, next, val) => {
   }
   next();
 };
+
+exports.customMiddleware = (req, res, next) => {
+  const { name, price } = req.body;
+  if (!(name && price)) {
+    return res.status(404).json({
+      status: 'error',
+      message: '404 error',
+    });
+  }
+  next();
+};
