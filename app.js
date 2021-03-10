@@ -1,7 +1,11 @@
 const express = require('express');
 const fs = require('fs');
+const morgan = require('morgan');
 
 const app = express();
+
+// MIDDLEWARES
+app.use(morgan('dev'));
 app.use(express.json());
 
 // ############ custom middleware adds request time to the request obj ############
@@ -23,6 +27,7 @@ const tours = JSON.parse(
 
 // const tours = fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`);
 
+// ROUTE HANDLERS
 const getAllTours = (req, res) => {
   res.status(200).json({
     status: 'success',
@@ -144,9 +149,11 @@ const deleteTour = (req, res) => {
 
 // app.delete('/api/v1/tours/:id', deleteTour);
 
+// ROUTE SETUPS
 app.route('/api/v1/tours').get(getAllTours).post(createTour);
 app.route('/api/v1/tours/:id').get(getTour).put(updateTour).delete(deleteTour);
 
+// START THE SERVER AT PORT 3000
 const port = 3000;
 app.listen(port, () => {
   console.log('listening...');
