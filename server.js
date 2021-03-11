@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 dotenv.config({ path: './config.env' });
 
 const app = require('./app');
+const port = 3000;
 const DB = process.env.DATABASE_LOCAL;
 // console.log(process.env);
 mongoose
@@ -20,7 +21,35 @@ mongoose
   });
 // console.log(process.env);
 
-const port = 3000;
+// TOUR SCHEMA
+const tourSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, 'a tour must have a name'],
+    unique: true,
+  },
+  rating: { type: Number, default: 4.5 },
+  price: { type: Number, required: [true, 'a tour must have a price'] },
+});
+
+// MODEL
+const Tour = mongoose.model('Tour', tourSchema);
+
+const testTour = new Tour({
+  name: 'the park camper',
+  price: 399,
+});
+//save the document to the db
+testTour
+  .save()
+  .then((doc) => {
+    console.log(doc);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+//START THE SERVER AT PORT port
 app.listen(port, () => {
   console.log(`listening... PORT : ${port}`);
 });
