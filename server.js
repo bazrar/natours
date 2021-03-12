@@ -9,6 +9,7 @@ const DB = process.env.DATABASE;
 // console.log(process.env);
 mongoose
   .connect(DB, {
+    useUnifiedTopology: true,
     useFindAndModify: false,
     useNewUrlParser: true,
     useCreateIndex: true,
