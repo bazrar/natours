@@ -8,7 +8,7 @@ dotenv.config({
   path: `${__dirname}/../../config.env`,
 });
 
-const db = process.env.DATABASE_LOCAL;
+const db = process.env.DATABASE;
 // console.log(db);
 
 mongoose
