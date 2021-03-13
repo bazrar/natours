@@ -40,6 +40,6 @@ mongoose
 //   });
 
 //START THE SERVER AT PORT port
-app.listen(port, () => {
+app.listen(5000, () => {
   console.log(`listening... PORT : ${port}`);
 });
