@@ -7,7 +7,7 @@ class APIFeatures {
   filter() {
     const queryObj = { ...this.queryStr };
     const excludedOptions = ['sort', 'fields', 'page', 'limit'];
-    excludedOptions.foreach((el) => delete queryObj[el]);
+    excludedOptions.forEach((el) => delete queryObj[el]);
 
     const queryString = JSON.stringify(queryObj).replace(
       /\bgte|gt|lte|lt\b/g,
@@ -38,6 +38,7 @@ class APIFeatures {
     }
     return this;
   }
+
   pagination() {
     const page = this.queryStr.page * 1 || 1;
     const limit = this.queryStr.limit * 1 || 100;

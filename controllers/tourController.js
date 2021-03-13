@@ -91,6 +91,7 @@ exports.getAllTours = async (req, res) => {
     //   if (skip >= numTours) throw new Error('page limit exceeded');
     // }
     // EXECUTE QUERY
+    console.log(Tour.find());
     const features = new APIFeatures(Tour.find(), req.query)
       .filter()
       .sort()
