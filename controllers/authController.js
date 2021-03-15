@@ -6,19 +6,18 @@ const signToken = (id) => {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
+
 exports.signup = async (req, res) => {
+  const { name, email, password, passwordConfirm } = req.body;
   try {
-    const { name, email, password, passwordConfirm } = req.body;
     const newUser = await User.create({
       name,
       email,
       password,
       passwordConfirm,
     });
-
-    // generate Jwt token
-    const token = signToken(user._id);
-
+    // console.log(newUser);
+    const token = signToken(newUser._id);
     res.status(200).json({
       status: 'success',
       token,
@@ -27,12 +26,39 @@ exports.signup = async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(401).json({
+    res.status(400).json({
       status: 'fail',
       message: err,
     });
   }
 };
+// exports.signup = async (req, res) => {
+//   try {
+//     const { name, email, password, passwordConfirm } = req.body;
+//     const newUser = await User.create({
+//       name,
+//       email,
+//       password,
+//       passwordConfirm,
+//     });
+
+//     // generate Jwt token
+//     let token = signToken(user._id);
+//     console.log(token);
+
+//     res.status(200).json({
+//       status: 'success',
+//       data: {
+//         user: newUser,
+//       },
+//     });
+//   } catch (err) {
+//     res.status(401).json({
+//       status: 'fail',
+//       message: err,
+//     });
+//   }
+// };
 
 exports.login = async (req, res) => {
   try {
