@@ -20,6 +20,7 @@ app.use(express.static(`${__dirname}/public`));
 // ############ custom middleware adds request time to the request obj ############
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
+  console.log(req.headers);
   next();
 });
 // app.get('/',(req, res) => {
