@@ -1,6 +1,7 @@
 const express = require('express');
 const tourController = require('../controllers/tourController');
-const { route } = require('./userRoutes');
+const authController = require('../controllers/authController');
+
 const {
   createTour,
   getAllTours,
@@ -9,6 +10,8 @@ const {
   deleteTour,
   aliasTop5Tours,
 } = tourController;
+
+const { protect } = authController;
 const router = express.Router();
 
 // router.param('id', checkId);
@@ -18,7 +21,7 @@ const router = express.Router();
 
 //if not, send 404 error
 //chain the middleware to the createTour
-router.route('/').post(createTour).get(getAllTours);
+router.route('/').post(createTour).get(protect, getAllTours);
 router.route('/:id').get(getTour).patch(updateTour).delete(deleteTour);
 router.route('/top-5-tours').get(aliasTop5Tours, getAllTours);
 // router.route('/').get(getAllTours).post(createTour);

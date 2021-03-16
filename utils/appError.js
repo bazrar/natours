@@ -1,3 +1,5 @@
+const app = require('../app');
+
 class AppError extends Error {
   constructor(message, statusCode) {
     super(message);
@@ -7,3 +9,5 @@ class AppError extends Error {
     this.isOperational = true;
   }
 }
+
+module.exports = AppError;
