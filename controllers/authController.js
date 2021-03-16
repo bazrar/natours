@@ -17,6 +17,7 @@ exports.signup = async (req, res) => {
     password,
     passwordConfirm,
     passwordChangedAt,
+    role,
   } = req.body;
   try {
     const newUser = await User.create({
@@ -25,6 +26,7 @@ exports.signup = async (req, res) => {
       password,
       passwordConfirm,
       passwordChangedAt,
+      role,
     });
     // console.log(newUser);
     const token = signToken(newUser._id);
@@ -153,5 +155,18 @@ exports.protect = async (req, res, next) => {
   //     'user recently changed the password. Please login again'
   //   );
   // }
+  req.user = freshUser;
   next();
+};
+
+exports.restrictTo = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({
+        status: 'fail',
+        message: 'forbidden',
+      });
+    }
+    next();
+  };
 };
